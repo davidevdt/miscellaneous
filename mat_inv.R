@@ -66,3 +66,36 @@ benchmark(
 	"woodbory" = {newInv(A, X, sigma2)}, 
 	replications = 10
 )
+
+
+
+
+# Case: varying n/p ratio
+p <- 1000
+ratios <- c(0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1)		# --> n = (10, 25, 50, 100, 250, 500, 1000)
+A <- runif(p)
+sigma2 <- 1.5
+
+
+for(r in ratios){
+
+	n <- as.integer(p * r)
+	print( sprintf("Ratio = %.3f", r) ) 
+
+
+	set.seed(100)
+	X <- matrix(rnorm(n*p), n, p)
+
+	print(
+		benchmark(
+			# "classic" = {classicInv(A, X, sigma2)}, 
+			"cholesky" = {cholInv(A, X, sigma2)}, 
+			"woodbory" = {newInv(A, X, sigma2)}, 
+			replications = 10
+		)
+	)
+	
+	print( sprintf("################################") )
+	cat("\n")	
+
+}
