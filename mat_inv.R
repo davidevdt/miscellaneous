@@ -1,5 +1,11 @@
 library(rbenchmark)
 
+
+###################################################################
+###		What  matrix inversion is faster? 		###
+###	    Standard vs. Cholsesky vs. Woodbory Identity	###
+###################################################################
+
 # Standard way of calculating (D + UCV)^-1
 classicInv <- function(A, X, sigma2){
 	solve(diag(A) + (sqrt(1/sigma2)*t(X) %*% (sqrt(1/sigma2)*X)))
