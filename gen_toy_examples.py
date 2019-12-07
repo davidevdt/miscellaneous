@@ -262,8 +262,11 @@ def make_data(type_data=1, sample_size=20, starting_seed=2,
 
 
 if __name__ == "__main__":
+    
     print("Welcome to the toy datasets generator program.")
     print("===============================================================")
+    
+    
     while True:
         selection_type = -1    
         
