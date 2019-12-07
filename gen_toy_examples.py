@@ -263,113 +263,123 @@ def make_data(type_data=1, sample_size=20, starting_seed=2,
 
 if __name__ == "__main__":
     print("Welcome to the toy datasets generator program.")
+    print("===============================================================")
+    while True:
+        selection_type = -1    
         
-    selection_type = -1 
-    
-    while( int(selection_type) < 1 or int(selection_type) > 6 ):
-        print("""Please select the type of dataset you want to generate,
-          by choosing one of the following options:
-              
-          [1] = classification, linear perfect separation
-          [2] = classification, linear non-perfect separation
-          [3] = classification, moons 
-          [4] = classification, circles
-          [5] = linear regression
-          [6] = non-linear regression                 
-          [9] = exit 
-              
-          """)
-        
-        print("Select one of the options above:")
-        read_input = input()
-        selection_type = int( read_input )
-    
-        if(selection_type not in (1, 2, 3, 4, 5, 6, 9)): 
-            print("Please select options 1-6, or 9 to exit")
-        
-        elif selection_type == 9: 
-            sys.exit()
+        while (int(selection_type) < 1 or int(selection_type) > 6 ):
+            print("""Please select the type of dataset you want to generate,\nby choosing one of the following options:
+                  
+    [1] = classification, linear perfect separation
+    [2] = classification, linear non-perfect separation
+    [3] = classification, moons 
+    [4] = classification, circles
+    [5] = linear regression
+    [6] = non-linear regression                 
+    [9] = exit 
+                  
+              """)
+                
+            print("Select one of the options above:")
+            read_input = input()
+            selection_type = int( read_input )
             
-        else: 
+            if selection_type not in (1, 2, 3, 4, 5, 6, 9):
+                print("Please select options 1-6, or 9 to exit")    
+            elif selection_type == 9:
+                sys.exit()
             
-            if(selection_type == 1):
-                print("You selected 'classification, linear perfect separation'.")
-            elif(selection_type == 2): 
-                print("You selected 'classification, linear non-perfect separation'.")
-            elif(selection_type == 3): 
-                print("You selected 'classification, moons'.")
-            elif(selection_type == 4): 
-                print("You selected 'classification, circles'.")
-            elif(selection_type == 5): 
-                print("You selected 'linear regression'.")
+            else:
+                if selection_type == 1:
+                    print("You selected 'classification, linear perfect separation'.")
+                elif selection_type == 2: 
+                    print("You selected 'classification, linear non-perfect separation'.")
+                elif selection_type == 3: 
+                    print("You selected 'classification, moons'.")
+                elif selection_type == 4: 
+                    print("You selected 'classification, circles'.")
+                elif selection_type == 5: 
+                    print("You selected 'linear regression'.")
+                else: 
+                    print("You selected 'non-linear regression'.")                
+                # break
+            
+                
+        sel_samp_size = -1
+        sel_lev_noise = -1
+        
+        while sel_samp_size <= 0:
+            print("Please select sample size:")
+            read_input = input()
+            sel_samp_size = int(read_input)
+            
+            if sel_samp_size <= 0 :
+                print("Sample size must be larger than 0.")
+            # else:
+                # break
+            
+     
+        while sel_lev_noise <= 0:
+            if( selection_type not in (1, 5, 6)):
+                print("Please select noise level:")
+            elif selection_type == 1:
+                print("Please select separation level:")
             else: 
-                print("You selected 'non-linear regression'.") 
+                print("Please select error standard deviation:")
+            read_input = input()
+            sel_lev_noise = float(read_input)
             
-            break
+            if sel_samp_size <= 0:
+                print("Noise level must be larger than 0.")
+            # else:
+                # break
+               
         
-    
-    print("Now select desired level of noise and sample size:")
-    
-    sel_samp_size = -1
-    sel_lev_noise = -1
-    
-    while( sel_samp_size <= 0 ):
-        print("Please select sample size:")
-        read_input = input()
-        sel_samp_size = int(read_input)
+        data = make_data(type_data=selection_type, 
+                         sample_size=sel_samp_size,
+                         noise_level = sel_lev_noise)
         
-        if( sel_samp_size <= 0 ):
-            print("Sample size must be larger than 0.")
-        else:
-            break
+        plot_data(data, type_data=selection_type, 
+                  fig_size=(10,10), 
+                  mark_size=10, 
+                  font_size=10)
         
- 
-    while( sel_lev_noise <= 0 ):
-        if( selection_type not in (1, 5, 6)):
-            print("Please select noise level:")
-        elif selection_type == 1:
-            print("Please select separation level:")
-        else: 
-            print("Please select error standard deviation:")
-        read_input = input()
-        sel_lev_noise = float(read_input)
+        print("""Data have been generated. Do you want to export it?
+        [y] yes
+        [q] exit without exporting data
+        [r] restart 
+              """)
         
-        if( sel_samp_size <= 0 ):
-            print("Noise level must be larger than 0.")
-        else:
-            break
-           
-    
-    data = make_data(type_data=selection_type, 
-                     sample_size=sel_samp_size,
-                     noise_level = sel_lev_noise)
-    
-    plot_data(data, type_data=selection_type, 
-              fig_size=(10,10), 
-              mark_size=10, 
-              font_size=10)
-    
-    print("""Data have been generated. Do you want to export it?
-          [y] yes
-          [n] exit without exporting data
-          """)
-    
-    plot_or_exit = input() 
-    
-    while(plot_or_exit not in ("y", "n")):
-        print("Please make your selection: y/n")
-        plot_or_exit = input()
+        export_or_exit = input() 
         
-    if(plot_or_exit == "n"):
-        print("Exiting the program...")
-        sys.exit()
-    else: 
-        print("Please select the file destination, including filename:")
-        filepath = input()
-        print("Exporting the dataset...")        
-        export_data(data, filepath)
-        print("Data exported. Exiting the program...")
-        sys.exit()
+        while export_or_exit not in ("y", "q", "r"):
+            print("Please make your selection: y/q/r")
+            export_or_exit = input()
+            
+        if export_or_exit == "q":
+            print("Exiting the program...")
+            sys.exit()
+        elif export_or_exit == "y": 
+            print("Please select the file destination, including filename:")
+            filepath = input()
+            print("Exporting the dataset...")        
+            export_data(data, filepath)
+            print("""Data exported. Exit or restart?
+                [q] exit 
+                [r] restart 
+                     """)
+                     
+            restart_or_exit = input()
+            
+            while restart_or_exit not in ("q", "r"):
+                print("Please make your selection: q/r")
+                export_or_exit = input()
+            
+            if restart_or_exit == "q":
+                sys.exit()
+                
+    
+        print("===============================================================")   
         
 
     
