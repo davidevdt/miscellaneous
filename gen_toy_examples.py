@@ -1,5 +1,5 @@
 ### A small python program that allows generating 
-### toy machine learnign datasets. 
+### toy machine learning datasets. 
 
 import numpy as np
 import pandas as pd 
