@@ -240,13 +240,7 @@ def make_data(type_data=1, sample_size=20, starting_seed=2,
                 b2*x1**2 + b3*x1**3 + \
                 np.random.normal(scale=noise_level, size=sample_size)
             
-            
-            plt.figure(figsize=(10, 10))
-            plt.plot(x1, y, "bo", markersize=10)
-            plt.xlabel("x", fontsize=15)
-            plt.ylabel("y", fontsize=15)
-            plt.show()
-            
+     
             # Data Frame 
             df =  pd.DataFrame(dict(x=x1, y=y))
 
